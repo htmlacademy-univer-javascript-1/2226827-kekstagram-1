@@ -1,5 +1,5 @@
 // Функция, возвращающая случайное целое число из переданного диапазона включительно
-function getRandom (start, end) {
+function getRandomInt (start, end) {
   if (start >= end) {
     throw new Error('The "start" value must be less than the "end" value.');
   } else if (start < 0 || end < 0) {
@@ -11,7 +11,7 @@ function getRandom (start, end) {
   }
 }
 
-getRandom(0, 100);
+getRandomInt(0, 100);
 
 // Функция для проверки максимальной длины строки
 function checkStringLength (testLine, maxLength) {
