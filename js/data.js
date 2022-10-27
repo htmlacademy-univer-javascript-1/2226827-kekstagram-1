@@ -1,4 +1,4 @@
-import {getRandomInt, getRandomObject, getId} from './util';
+import {getRandomInt, getRandomObject} from './util.js';
 
 const DESCRIPTIONS = [
   'Awesome',
@@ -35,6 +35,15 @@ const NUMBER_OF_POSTS = 25;
 const arrayIdNames = Array(5 * NUMBER_OF_POSTS).fill(true);
 const arrayId = Array(NUMBER_OF_POSTS).fill(true);
 const arrayUrl = Array(NUMBER_OF_POSTS).fill(true);
+
+const getId = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i]) {
+      array[i] = false;
+      return i + 1;
+    }
+  }
+};
 
 const createComment = () => ({
   id: getId(arrayIdNames),
