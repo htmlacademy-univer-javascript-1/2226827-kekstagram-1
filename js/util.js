@@ -14,15 +14,6 @@ const checkStringLength = (testLine, maxLength) => testLine.length < maxLength;
 
 const getRandomObject = (objects) => objects[getRandomInt(0, objects.length - 1)];
 
-const getId = (array) => {
-  for (let i = 0; i < array.length; i++) {
-    if (array[i]) {
-      array[i] = false;
-      return i + 1;
-    }
-  }
-};
-
 checkStringLength('Goodbye world!', 15);
 
-export {getRandomInt, getRandomObject, getId};
+export {getRandomInt, getRandomObject};
