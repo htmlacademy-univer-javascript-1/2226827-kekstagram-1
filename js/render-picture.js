@@ -1,8 +1,14 @@
 import {createPosts} from './data.js';
-import {addBigPicture, bigPicture} from './full-size-picture.js';
+import {addBigPicture, bigPicture, resetComments} from './full-size-picture.js';
 const pictureTemplate = document.querySelector('#picture').content;
 const picture = pictureTemplate.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
+
+function removeComments() {
+  for (let i = 0; document.querySelectorAll('.social__comment').length; i++) {
+    document.querySelector('.social__comment').remove();
+  }
+}
 
 const createPicture = (post) => {
   const pictureClone = picture.cloneNode(true);
@@ -11,6 +17,7 @@ const createPicture = (post) => {
   pictureClone.querySelector('.picture__comments').textContent = post.comments.length;
   picturesContainer.appendChild(pictureClone);
   pictureClone.addEventListener('click', () => {
+    removeComments();
     addBigPicture(post);
   });
 };
@@ -26,7 +33,8 @@ const closeBigPicture = () => {
   bigPicture.querySelector('.social__comment-count').classList.remove('hidden');
   bigPicture.querySelector('.comments-loader').classList.remove('hidden');
   document.body.classList.remove('modal-open');
-  bigPicture.querySelector('.social__comments').replaceChildren();
+  removeComments();
+  resetComments();
 };
 
 bigPicture.querySelector('.big-picture__cancel').addEventListener('click', () => {
