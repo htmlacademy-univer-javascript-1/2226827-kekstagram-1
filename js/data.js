@@ -53,7 +53,7 @@ const createComment = () => ({
 });
 
 const createComments = () => {
-  const number = getRandomInt(1, 5);
+  const number = getRandomInt(1, 40);
   const comments = Array(number);
   for (let i = 0; i < number; i++) {
     comments[i] = createComment();
