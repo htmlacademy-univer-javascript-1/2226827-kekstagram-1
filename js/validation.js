@@ -1,9 +1,12 @@
-const hasgTags = document.querySelector('.text__hashtags');
-const description = document.querySelector('.text__description');
-const form = document.querySelector('.img-upload__form');
-const regex = /^#[0-9a-zA-Zа-яА-ЯёЁ]{1,19}$/;
+import { isEscape } from './util.js';
 
-const pristine = new Pristine(form, {
+const textHashTagsElement = document.querySelector('.text__hashtags');
+const textDescriptionElement = document.querySelector('.text__description');
+const imageUploadFormElement = document.querySelector('.img-upload__form');
+const regex = /^#[0-9a-zA-Zа-яА-ЯёЁ]{1,19}$/;
+const MAX_COMMENT_LENGTH = 140;
+
+const pristine = new Pristine(imageUploadFormElement, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__item--invalid',
   successClass: 'img-upload__item--valid',
@@ -12,7 +15,7 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__error'
 });
 
-function hashtagChecker(value) {
+const hashtagChecker = (value) => {
   value = value.toLowerCase().trim();
   if (!value) {
     return true;
@@ -25,27 +28,35 @@ function hashtagChecker(value) {
   }
   const hashtags = [...new Set(hashtag)];
   return hashtag.length <= 5 && hashtag.length === hashtags.length;
-}
+};
 
-function commentChecker(comment) {
-  return comment.length <= 140;
-}
+const commentChecker = (comment) => comment.length <= MAX_COMMENT_LENGTH;
 
-function stopDuringFocus(evt) {
-  if (evt.keyCode === 27) {
+const onHashTagsKeyDown = (evt) => {
+  if (isEscape(evt)) {
     evt.stopPropagation();
   }
-}
+};
 
-hasgTags.onkeydown = stopDuringFocus;
-description.onkeydown = stopDuringFocus;
-
-pristine.addValidator(hasgTags, hashtagChecker, 'Hashtag entered incorrectly');
-pristine.addValidator(description, commentChecker, 'The comment length has exceeded the 140 character limit');
-
-form.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
+const onDescriptionKeyDown = (evt) => {
+  if (isEscape(evt)) {
+    evt.stopPropagation();
   }
-});
+};
+
+const userValidation = () => {
+  textHashTagsElement.addEventListener('keydown', onHashTagsKeyDown);
+  textDescriptionElement.addEventListener('keydown', onDescriptionKeyDown);
+
+  pristine.addValidator(textHashTagsElement, hashtagChecker, 'Hashtag entered incorrectly');
+  pristine.addValidator(textDescriptionElement, commentChecker, `The comment length has exceeded the ${MAX_COMMENT_LENGTH} character limit`);
+
+  imageUploadFormElement.addEventListener('submit', (evt) => {
+    const isValid = pristine.validate();
+    if (!isValid) {
+      evt.preventDefault();
+    }
+  });
+};
+
+export { userValidation };

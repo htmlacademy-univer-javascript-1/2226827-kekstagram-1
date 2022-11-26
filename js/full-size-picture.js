@@ -1,5 +1,5 @@
-const bigPicture = document.querySelector('.big-picture');
-const commentsLoader = bigPicture.querySelector('.comments-loader');
+const bigPictureElement = document.querySelector('.big-picture');
+const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
 let postCommentsCounter = 0;
 let loadedCommentsCounter = 0;
 let commentsInPost = 0;
@@ -23,9 +23,9 @@ const generateComments = (comments) => {
 
     li.appendChild(img);
     li.appendChild(p);
-    bigPicture.querySelector('.social__comments').appendChild(li);
+    bigPictureElement.querySelector('.social__comments').appendChild(li);
     if (loadedCommentsCounter === postCommentsCounter) {
-      commentsLoader.classList.add('hidden');
+      commentsLoaderElement.classList.add('hidden');
     }
   }
 };
@@ -35,27 +35,27 @@ const cutComments = (comments) => {
   document.querySelector('.current-comments-count').textContent = loadedCommentsCounter;
 };
 
-function loadFiveComments(evt) {
+const loadFiveComments = (evt) => {
   evt.preventDefault();
   cutComments(commentsInPost);
-}
+};
 
 const addBigPicture = (post) => {
-  bigPicture.classList.remove('hidden');
-  bigPicture.querySelector('.big-picture__img').querySelector('img').src = post.url;
-  bigPicture.querySelector('.likes-count').textContent = post.likes;
+  bigPictureElement.classList.remove('hidden');
+  bigPictureElement.querySelector('.big-picture__img').querySelector('img').src = post.url;
+  bigPictureElement.querySelector('.likes-count').textContent = post.likes;
   commentsInPost = post.comments;
-  cutComments(commentsInPost);
+  bigPictureElement.querySelector('.comments-count').textContent = commentsInPost.length.toString();
   postCommentsCounter = commentsInPost.length;
-  commentsLoader.addEventListener('click', loadFiveComments);
-  bigPicture.querySelector('.comments-count').textContent = commentsInPost.length.toString();
-  bigPicture.querySelector('.social__caption').textContent = post.description;
+  cutComments(commentsInPost);
+  commentsLoaderElement.addEventListener('click', loadFiveComments);
+  bigPictureElement.querySelector('.social__caption').textContent = post.description;
   document.querySelector('body').classList.add('modal-open');
 };
 
-function resetComments() {
+const resetComments = () => {
   loadedCommentsCounter = 0;
   postCommentsCounter = 0;
-}
+};
 
-export {addBigPicture, bigPicture, resetComments};
+export { addBigPicture, bigPictureElement, resetComments };
