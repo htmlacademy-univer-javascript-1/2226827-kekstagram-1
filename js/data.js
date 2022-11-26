@@ -1,4 +1,4 @@
-import {getRandomInt, getRandomObject} from './util.js';
+import { getRandomInt, getRandomObject } from './util.js';
 
 const DESCRIPTIONS = [
   'Awesome',
@@ -71,4 +71,4 @@ const createPost = () => ({
 
 const createPosts = () => Array.from({ length: NUMBER_OF_POSTS }, createPost);
 
-export{createPosts};
+export{ createPosts };

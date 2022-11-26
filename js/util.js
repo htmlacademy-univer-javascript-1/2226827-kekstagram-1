@@ -10,10 +10,8 @@ const getRandomInt = (start, end) => {
   }
 };
 
-const checkStringLength = (testLine, maxLength) => testLine.length < maxLength;
-
 const getRandomObject = (objects) => objects[getRandomInt(0, objects.length - 1)];
 
-checkStringLength('Goodbye world!', 15);
+const isEscape = (evt) => evt.key === 'Escape';
 
-export {getRandomInt, getRandomObject};
+export { getRandomInt, getRandomObject, isEscape };
