@@ -50,13 +50,7 @@ const userValidation = () => {
 
   pristine.addValidator(textHashTagsElement, hashtagChecker, 'Hashtag entered incorrectly');
   pristine.addValidator(textDescriptionElement, commentChecker, `The comment length has exceeded the ${MAX_COMMENT_LENGTH} character limit`);
-
-  imageUploadFormElement.addEventListener('submit', (evt) => {
-    const isValid = pristine.validate();
-    if (!isValid) {
-      evt.preventDefault();
-    }
-  });
 };
+const isValid = () => pristine.validate();
 
-export { userValidation };
+export { userValidation, isValid };
