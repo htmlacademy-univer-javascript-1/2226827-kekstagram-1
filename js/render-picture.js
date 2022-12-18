@@ -1,9 +1,16 @@
 import { addBigPicture, bigPictureElement, resetComments } from './full-size-picture.js';
 import { isEscape } from './util.js';
+import { getRandomElements, debounce } from './util.js';
 
 const pictureTemplate = document.querySelector('#picture').content;
 const pictureElement  = pictureTemplate.querySelector('.picture');
 const picturesElement  = document.querySelector('.pictures');
+const imageFiltersForm = document.querySelector('.img-filters__form');
+const defaultFilter = document.querySelector('#filter-default');
+const randomFilter = document.querySelector('#filter-random');
+const discussedFilter = document.querySelector('#filter-discussed');
+
+let newPosts = [], tmpPosts = [];
 
 const removeComments = () => {
   for (let i = 0; document.querySelectorAll('.social__comment').length; i++) {
@@ -26,13 +33,16 @@ const generateErrorMessage = (message) => {
   document.querySelector('body').append(error);
 };
 
-const renderPosts = (posts) => {
-  posts.forEach((post) => {
+const createPosts = () => {
+  tmpPosts.forEach((post) => picturesElement.removeChild(post));
+  tmpPosts = [];
+  newPosts.forEach((post) => {
     const pictureClone = pictureElement.cloneNode(true);
     pictureClone .querySelector('.picture__img').src = post.url;
     pictureClone .querySelector('.picture__likes').textContent = post.likes;
     pictureClone .querySelector('.picture__comments').textContent = post.comments.length;
     picturesElement.appendChild(pictureClone);
+    tmpPosts.push(pictureClone);
     pictureClone .addEventListener('click', () => {
       removeComments();
       addBigPicture(post);
@@ -48,6 +58,39 @@ const renderPosts = (posts) => {
       closeBigPicture();
     }
   });
+};
+
+const changeFilter = (posts, db) => {
+  imageFiltersForm.addEventListener('click', (evt) => {
+    newPosts = [...posts];
+    switch (evt.target.id) {
+      case 'filter-default':
+        defaultFilter.classList.add('img-filters__button--active');
+        randomFilter.classList.remove('img-filters__button--active');
+        discussedFilter.classList.remove('img-filters__button--active');
+        break;
+      case 'filter-random':
+        defaultFilter.classList.remove('img-filters__button--active');
+        randomFilter.classList.add('img-filters__button--active');
+        discussedFilter.classList.remove('img-filters__button--active');
+        newPosts = getRandomElements(newPosts, 10);
+        break;
+      case 'filter-discussed':
+        defaultFilter.classList.remove('img-filters__button--active');
+        randomFilter.classList.remove('img-filters__button--active');
+        discussedFilter.classList.add('img-filters__button--active');
+        newPosts.sort((a, b) => b.comments.length - a.comments.length);
+        break;
+    }
+    db();
+  });
+};
+
+const renderPosts = (posts) => {
+  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
+  newPosts = [...posts];
+  createPosts();
+  changeFilter(posts, debounce(() => createPosts(), 500));
 };
 
 export { renderPosts, generateErrorMessage };
