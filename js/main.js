@@ -1,10 +1,9 @@
-import { createPosts } from './data.js';
-import { renderPosts } from './render-picture.js';
+import { renderPosts, generateErrorMessage } from './render-picture.js';
 import { addForm } from './forms.js';
 import { userValidation } from './validation.js';
+import { getData } from './api.js';
 
-const posts = createPosts();
-renderPosts(posts);
+getData(renderPosts, generateErrorMessage);
 
 addForm();
 userValidation();
