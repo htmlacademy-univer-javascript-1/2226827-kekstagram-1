@@ -99,14 +99,6 @@ const listenerControl = () => {
 };
 
 const addForm = () => {
-  imageUploadStart.addEventListener('change', () => {
-    imageUploadOverlay.classList.remove('hidden');
-    effectLevelSlider.classList.add('hidden');
-    document.body.classList.add('modal-open');
-    imageUploadForm.addEventListener('change', changeEffect);
-    listenerControl();
-  });
-
   imageUploadStart .addEventListener('change', () => {
     imageUploadOverlay .classList.remove('hidden');
     effectLevelSlider .classList.add('hidden');

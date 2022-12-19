@@ -5,6 +5,7 @@ const textDescriptionElement = document.querySelector('.text__description');
 const imageUploadFormElement = document.querySelector('.img-upload__form');
 const regex = /^#[0-9a-zA-Zа-яА-ЯёЁ]{1,19}$/;
 const MAX_COMMENT_LENGTH = 140;
+const MAX_COUNT_OF_HASHTAGS = 5;
 
 const pristine = new Pristine(imageUploadFormElement, {
   classTo: 'img-upload__field-wrapper',
@@ -27,7 +28,7 @@ const hashtagChecker = (value) => {
     }
   }
   const hashtags = [...new Set(hashtag)];
-  return hashtag.length <= 5 && hashtag.length === hashtags.length;
+  return hashtag.length <= MAX_COUNT_OF_HASHTAGS && hashtag.length === hashtags.length;
 };
 
 const commentChecker = (comment) => comment.length <= MAX_COMMENT_LENGTH;
