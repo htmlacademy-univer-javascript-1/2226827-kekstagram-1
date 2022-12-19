@@ -1,6 +1,5 @@
 import { addBigPicture, bigPictureElement, resetComments } from './full-size-picture.js';
-import { isEscape } from './util.js';
-import { getRandomElements, debounce } from './util.js';
+import { isEscape, getRandomElements, debounce } from './util.js';
 
 const pictureTemplate = document.querySelector('#picture').content;
 const pictureElement  = pictureTemplate.querySelector('.picture');
@@ -9,7 +8,8 @@ const imageFiltersForm = document.querySelector('.img-filters__form');
 const defaultFilter = document.querySelector('#filter-default');
 const randomFilter = document.querySelector('#filter-random');
 const discussedFilter = document.querySelector('#filter-discussed');
-
+const TIMEOUT_DELAY = 500;
+const COUNT_OF_RANDOM_POSTS = 10;
 let newPosts = [], tmpPosts = [];
 
 const removeComments = () => {
@@ -38,12 +38,12 @@ const createPosts = () => {
   tmpPosts = [];
   newPosts.forEach((post) => {
     const pictureClone = pictureElement.cloneNode(true);
-    pictureClone .querySelector('.picture__img').src = post.url;
-    pictureClone .querySelector('.picture__likes').textContent = post.likes;
-    pictureClone .querySelector('.picture__comments').textContent = post.comments.length;
+    pictureClone.querySelector('.picture__img').src = post.url;
+    pictureClone.querySelector('.picture__likes').textContent = post.likes;
+    pictureClone.querySelector('.picture__comments').textContent = post.comments.length;
     picturesElement.appendChild(pictureClone);
     tmpPosts.push(pictureClone);
-    pictureClone .addEventListener('click', () => {
+    pictureClone.addEventListener('click', () => {
       removeComments();
       addBigPicture(post);
     });
@@ -73,7 +73,7 @@ const changeFilter = (posts, db) => {
         defaultFilter.classList.remove('img-filters__button--active');
         randomFilter.classList.add('img-filters__button--active');
         discussedFilter.classList.remove('img-filters__button--active');
-        newPosts = getRandomElements(newPosts, 10);
+        newPosts = getRandomElements(newPosts, COUNT_OF_RANDOM_POSTS);
         break;
       case 'filter-discussed':
         defaultFilter.classList.remove('img-filters__button--active');
@@ -90,7 +90,7 @@ const renderPosts = (posts) => {
   document.querySelector('.img-filters').classList.remove('img-filters--inactive');
   newPosts = [...posts];
   createPosts();
-  changeFilter(posts, debounce(() => createPosts(), 500));
+  changeFilter(posts, debounce(() => createPosts(), TIMEOUT_DELAY));
 };
 
 export { renderPosts, generateErrorMessage };
